@@ -508,7 +508,12 @@ function updatePositions() {
   }
 
   for (var i = 0; i < items.length; i++) {
-      items[i].style.left = items[i].basicLeft + phases[i%5] + 'px';
+      var elRect = items[i].getBoundingClientRect();
+      var scrollTop = document.body.scrollTop;
+      var scrollBottom = document.body.scrollTop + window.innerHeight;
+      if (items[i].offsetTop < window.innerHeight) {
+          items[i].style.left = items[i].basicLeft + phases[i % 5] + 'px';
+      }
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
