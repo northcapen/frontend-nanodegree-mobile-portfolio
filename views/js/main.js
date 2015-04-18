@@ -520,7 +520,8 @@ function updatePositions() {
       // Only couple of pizzas are visible on screen. I can reduce number of them, but decided to make more general approach.
       // First, I tried to use HTMLElement.offset function, but it leads to layout recalculation which shouldn't be done in cycle.
       if (pizzaVerticalOffset(i) < window.innerHeight) {
-          items[i].style.left = items[i].basicLeft + phases[i % 5] + 'px';
+          // translateX could be processed on GPU and reduces number of paints
+          items[i].style.transform = 'translateX(' + (items[i].basicLeft + phases[i % 5]) + 'px)';
       }
   }
 
@@ -550,5 +551,5 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = pizzaVerticalOffset(i) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
-  updatePositions();
+ updatePositions();
 });
