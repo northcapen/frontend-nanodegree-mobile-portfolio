@@ -508,7 +508,8 @@ function pizzaVerticalOffset(index) {
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-  var items = document.querySelectorAll('.mover');
+    //getElementsByClassName is faster then querySelectorAll
+  var items = document.getElementsByClassName('mover');
   var phases = [];
   //pizza horizontal offset depends only on column where it located. So, we can precalculates offsets and reuse them further.
   for (var p = 0; p<5; p++) {
