@@ -497,21 +497,28 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
+const cols = 8;
+const interval = 256;
+
+function pizzaVerticalOffset(index) {
+    return Math.floor(index / cols) * interval;
+}
+
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
   var items = document.querySelectorAll('.mover');
   var phases = [];
+  //pizza horizontal offset depends only on column where it located. So, we can precalculates offsets and reuse them further.
   for (var p = 0; p<5; p++) {
     phases[p] = 100 * Math.sin((document.body.scrollTop / 1250) + (p % 5));
   }
 
   for (var i = 0; i < items.length; i++) {
-      var elRect = items[i].getBoundingClientRect();
-      var scrollTop = document.body.scrollTop;
-      var scrollBottom = document.body.scrollTop + window.innerHeight;
-      if (items[i].offsetTop < window.innerHeight) {
+      // Only couple of pizzas are visible on screen. I can reduce number of them, but decided to make more general approach.
+      // First, I tried to use HTMLElement.offset function, but it leads to layout recalculation which shouldn't be done in cycle.
+      if (pizzaVerticalOffset(i) < window.innerHeight) {
           items[i].style.left = items[i].basicLeft + phases[i % 5] + 'px';
       }
   }
@@ -531,16 +538,15 @@ window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 8;
-  var s = 256;
+
   for (var i = 0; i < 200; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
-    elem.basicLeft = (i % cols) * s;
-    elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    elem.basicLeft = (i % cols) * interval;
+    elem.style.top = pizzaVerticalOffset(i) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
   updatePositions();
