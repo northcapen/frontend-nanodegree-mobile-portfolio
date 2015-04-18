@@ -72,4 +72,12 @@ Feeling uninspired by the portfolio? Here's a list of cool portfolios I found af
 * <a href="http://www.roxannecook.com/">http://www.roxannecook.com/</a>
 * <a href="http://www.84colors.com/portfolio.html">http://www.84colors.com/portfolio.html</a>
 
-GH Pages is enabled
+### Optimizations in project
+
+1.  Pizza horizontal offset depends only on column where it located. So, we can precalculates offsets and reuse them further.
+2.   Only couple of pizzas are visible on screen. I can reduce number of them, but decided to make more general approach. 
+     First, I tried to use HTMLElement.offset function, but it leads to layout recalculation which shouldn't be done in cycle.
+3.   getElementsByClassName is faster then querySelectorAll
+4.   transform : translateX (instead of changing left property) could be processed on GPU and reduces number of paints
+
+       
