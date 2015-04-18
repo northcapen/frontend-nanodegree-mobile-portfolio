@@ -515,11 +515,11 @@ function updatePositions() {
   for (var p = 0; p<5; p++) {
     phases[p] = 100 * Math.sin((document.body.scrollTop / 1250) + (p % 5));
   }
-
-  for (var i = 0; i < items.length; i++) {
-      // Only couple of pizzas are visible on screen. I can reduce number of them, but decided to make more general approach.
-      // First, I tried to use HTMLElement.offset function, but it leads to layout recalculation which shouldn't be done in cycle.
-      if (pizzaVerticalOffset(i) < window.innerHeight) {
+    var innerHeight = window.innerHeight;
+    for (var i = 0; i < items.length; i++) {
+        // Only couple of pizzas are visible on screen. I can reduce number of them, but decided to make more general approach.
+        // First, I tried to use HTMLElement.offset function, but it leads to layout recalculation which shouldn't be done in cycle.
+        if (pizzaVerticalOffset(i) < innerHeight) {
           // translateX could be processed on GPU and reduces number of paints
           items[i].style.transform = 'translateX(' + (items[i].basicLeft + phases[i % 5]) + 'px)';
       }
