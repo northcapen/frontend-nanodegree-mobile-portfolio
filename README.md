@@ -15,6 +15,9 @@
 2. Removed unnecessary determineDx function
 3. Document.getElementsByClassName is faster then document.querySelectorAll
 
+### Other optimizations
+Improved page load time by putting all new pizzas in container and attaching it to DOM only once.
+
 
 ### Problems
 60 fps: Still got large composite layers time (sometimes 20-30 ms). May be it is real problem?  
